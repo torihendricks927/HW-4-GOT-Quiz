@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Thrones Quiz</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+        <h1>Game of Thrones Quiz</h1>
+        <button id="topScore" data-states="[0,2]">Top Score</button>
+        </button>
+        </header>
+        <main>
+            <!-- main page to ask if they want to start quiz -->
+            <section id="screen0" data-states="[0]">
+                <h1>In the Game of Thrones, you either win or you die. What will you decide?</h1>
+                <button>Shall we Begin?</button>
+            </section>
+            <!-- screen 1 is all the questions -->
+            <section id="screen1" class="hide" data-states="[1]">
+                <h1>Question</h1>
+                <p id="timer"></p>
+                <h2 id="question"></h2>
+                <ul id="possibleAnswers"></ul>
+                <button>Next Question</button>
+            </section>
+            <!-- screen 2 shows final result of right/wrong -->
+            <section id="screen2" class="hide" data-states="[2]">
+                <h1>Well done you wildling!</h1>
+                <h2 id="finalScore">How well you knew the land of Westeros: </h2>
+                <div id="sendScore">
+                    <p> Enter your Name and House: </p>
+                    <input type="text" id="playerInfo">
+                </div>
+                <button>Submit to the Gods for Judgement</button>
+            </section>
+            <section id="screen3" class="hide" data-states="[3]">
+                <h1>All Who Have Been Deemed Worthy</h1>
+                <h2 id="topScoresEl"></h2>
+                <button>Winter is Coming...Try Again?</button>
+            </section>
+        </main>
+    </div>
+    <script src="./assets/index.js"></script>
+</body>
+</html>
