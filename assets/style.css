@@ -1,0 +1,52 @@
+body {
+    background-image: url(./GOT125-32x18-MAIN-SITE-850x560.webp), url(./GOT125-32x18-MAIN-SITE-850x560.webp);
+    background-size: cover;
+    background-repeat: no-repeat repeat;
+    background-position: center;
+    background-color: black;
+    font-family: sans-serif;
+
+}
+
+ header { 
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: lightblue;
+    
+}
+
+#topScore {
+    background-color: lightblue;
+    margin: 20px;
+     padding: 10px;
+    justify-content: space-between;
+
+}
+
+header h1 {
+    border: 1px solid black;
+    background-color: black;
+    color: lightblue;
+    padding: 10px;
+}
+
+section {
+    display: block;
+    font-size: 20px;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid tan;
+    background-color: lightblue;
+    min-height: 200px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+.hide {
+    display: none;
+}
+
+
