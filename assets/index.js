@@ -8,9 +8,15 @@ var screen2ButtonEle = screen2Ele.querySelector("button");
 var screen3Ele = document.querySelector("#screen3"); 
 var screen3ButtonEle = document.querySelector("#button");
 var timerEle = document.querySelector("#timer");
-var saySomethingEle = document.querySelector("#saySomething");
+var topScoreEle = document.querySelector("#topScore");
 var questionEl = document.querySelector("#question");
 var answersEl = document.querySelector("#possibleAnswers");
+var finalEle = document.querySelector("#finalScore");
+var sendScoreEle = document.querySelector("#sendScore");
+var playerInfoEle = document.querySelector("#playerInfo");
+var highScoresEle = document.querySelector("highScoresEl");
+var timeLeft;
+var timeInterval;
 
 var HIDE_CLASS = "hide";
 
@@ -73,19 +79,46 @@ var dynamicElements = [
   screen0Ele,
   screen1Ele,
   screen2Ele,
-  timerEle,
-  saySomethingEle
+  topScoreEle,
 ];
+
+var HighScoreList = [];
+
+function gamePurpose(name, score) {
+    this.name = name;
+    this.score = score;
+}
+
+function storeGame() {
+    localStorage.setItem("highScoreList", JSON.stringify(HighScoreList));
+}
 
 function init() {
   setEventListeners();
 }
 
+function newGame() {
+    currentQuestion = 0;
+    currentGame = new gamePurpose("", 0);
+    populateQuestion(currentQuestion);
+    countdown();
+}
+
+function populateHighScores () {
+    HighScoreList=JSON.parse(localStorage.getItem("HighScoreList"));
+}
+
 function setState(state) {
   switch (state) {
     case 1:
-      populateQuestion();
+      newGame();
       break;
+    case 2:
+        // setFinalScore();
+        break;
+    case 3:
+        populateHighScores();
+        break;
     default:
       break;
   }
@@ -103,9 +136,9 @@ function setState(state) {
 
 function populateQuestion() {
   var questionObj = questions[currentQuestion];
-  // Remove the current list items
   answersEl.innerHTML = "";
   questionEl.textContent = questionObj.question;
+
   questionObj.answers.forEach(function (question) {
     var li = document.createElement("li");
     li.textContent = question;
@@ -116,29 +149,47 @@ function populateQuestion() {
   } else {
     currentQuestion++;
   }
-  console.log(currentQuestion);
 
 }
+
+function countdown() {
+    timeLeft = 30;
+    timerEle.textContent = timeLeft;
+    timeInterval = setInterval(function () {
+      
+      if (timeLeft > 1) {
+        timerEle.textContent = timeLeft + ' seconds remaining';
+       timeLeft--;
+      } else if (timeLeft === 1) {
+        timerEle.textContent = timeLeft + ' second remaining';
+        timeLeft--;
+      } else {
+        timerEle.textContent = '';
+        clearInterval(timeInterval);
+        setState(2);
+      }
+      console.log(timeLeft)
+    }, 1000);
+  }
+  
+
 
 function setEventListeners() {
   screen0ButtonEle.addEventListener("click", function () {
     setState(1);
   });
   screen1ButtonEle.addEventListener("click", function () {
-    setState(2);
+    setState(1);
   });
   screen2ButtonEle.addEventListener("click", function () {
-    setState(0);
+    setState(1);
   });
-  // Notice we are placing the event listener on the UL element.
-  // This is because the UL element is never destroyed whereas
-  // the list elements are always destroyed and re-created. We would
-  // need to add the event listeners to the list items
-  // every time we created one.
+  
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
-      window.alert(target.innerText);
+    //   window.alert(target.innerText);
+    populateQuestion();
     }
   });
 }
