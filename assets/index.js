@@ -141,18 +141,16 @@ function populateQuestion() {
   var questionObj = questions[currentQuestion];
   answersEl.innerHTML = "";
   questionEl.textContent = questionObj.question;
-
-  questionObj.answers.forEach(function (question) {
+    for (i = 0; i < questionObj.answers.length; i++) {
+        var answer = questionObj.answers[i];
+//   questionObj.answers.forEach(function (question) {
     var li = document.createElement("li");
-    li.textContent = question;
+    li.setAttribute("data-index", i);
+    li.textContent = answer;
     answersEl.appendChild(li);
-  });
-  if (currentQuestion === questions.length - 1) {
-    currentQuestion = 0;
-  } else {
-    currentQuestion++;
-  }
-}
+    }
+  };
+
 
 function rightAnswer(currentQuestion, answerID) {
     if (answerID === questions[currentQuestion]["answer"]) {
