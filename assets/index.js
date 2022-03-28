@@ -1,4 +1,4 @@
-
+//var to incorporate class and id to javascript
 var screen0Ele = document.querySelector("#screen0");
 var screen0ButtonEle = screen0Ele.querySelector("button");
 var screen1Ele = document.querySelector("#screen1");
@@ -74,38 +74,30 @@ var questions = [
 
 ];
 var currentQuestion = 0;
-
+//how to alternate through question array with answer choices
 var dynamicElements = [
   screen0Ele,
   screen1Ele,
   screen2Ele,
+  screen3Ele,
   topScoreEle,
 ];
-
+// Create var and functions to save scores to high score list
 var HighScoreList = [];
 
 function gamePurpose(name, score) {
     this.name = name;
     this.score = score;
 }
-
+//store results at end of game
 function storeGame() {
     localStorage.setItem("highScoreList", JSON.stringify(HighScoreList));
 }
 
+//how to begin game function
 function init() {
   setEventListeners();
-}
-
-function newGame() {
-    currentQuestion = 0;
-    currentGame = new gamePurpose("", 0);
-    populateQuestion(currentQuestion);
-    countdown();
-}
-
-function populateHighScores () {
-    HighScoreList=JSON.parse(localStorage.getItem("HighScoreList"));
+  populateHighScores();
 }
 
 function setState(state) {
@@ -114,7 +106,7 @@ function setState(state) {
       newGame();
       break;
     case 2:
-        // setFinalScore();
+        setFinalScore();
         break;
     case 3:
         populateHighScores();
@@ -123,17 +115,28 @@ function setState(state) {
       break;
   }
 
+//allows us to switch through screen id and remove hide class
   dynamicElements.forEach(function (ele) {
     var possibleStatesAttr = ele.getAttribute("data-states");
     var possibleStates = JSON.parse(possibleStatesAttr);
     if (possibleStates.includes(state)) {
       ele.classList.remove(HIDE_CLASS);
-    } else {
+    } 
+    else {
       ele.classList.add(HIDE_CLASS);
     }
   });
 }
 
+//first set function for someone playing for first time without high score
+function newGame() {
+    currentQuestion = 0;
+    currentGame = new gamePurpose("", 0);
+    populateQuestion(currentQuestion);
+    countdown();
+}
+
+//provides the questions from array
 function populateQuestion() {
   var questionObj = questions[currentQuestion];
   answersEl.innerHTML = "";
@@ -149,9 +152,39 @@ function populateQuestion() {
   } else {
     currentQuestion++;
   }
-
 }
 
+function rightAnswer(currentQuestion, answerID) {
+    if (answerID === questions[currentQuestion]["answer"]) {
+        correct(true);
+    }
+    else {
+        correct(false);
+    }
+  }
+
+function correct(correct) {
+    if (correct) {
+        displayMessage("Good");
+    }
+    else {
+        displayMessage("Wrong");
+        timeLeft = timeLeft - 5;
+    }
+  }
+
+    function displayMessage(message) {
+        switch (message) {
+            case "Good":
+                window.alert = "Well done Westerosi";
+            break;
+            case "Wrong":
+                window.alert = "Not even close"; 
+            break;
+        }
+    }
+
+//setup timer for quiz
 function countdown() {
     timeLeft = 30;
     timerEle.textContent = timeLeft;
@@ -166,13 +199,21 @@ function countdown() {
       } else {
         timerEle.textContent = '';
         clearInterval(timeInterval);
-        setState(2);
+        // setState(2);
       }
       console.log(timeLeft)
     }, 1000);
   }
-  
 
+  function setFinalScore() {
+      finalEle.textContent = currentGame.score;
+  }
+
+  function populateHighScores() {
+      HighScoreList = JSON.parse(localStorage.getItem("HighScoreList"));
+      finalEle.innerHTML = "";
+
+  }
 
 function setEventListeners() {
   screen0ButtonEle.addEventListener("click", function () {
@@ -182,17 +223,33 @@ function setEventListeners() {
     setState(1);
   });
   screen2ButtonEle.addEventListener("click", function () {
-    setState(1);
+    setState(3);
+  });
+  topScoreEle.addEventListener("click", function () {
+    setState(3);
   });
   
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
-    //   window.alert(target.innerText);
-    populateQuestion();
+        rightAnswer(currentQuestion, target.getAttribute("data-index"));
+        if (currentQuestion === questions.length - 1) {
+          clearInterval(timeInterval);
+          setState(2);
+        } 
+        else {
+        currentQuestion++;
+        populateQuestion();
     }
-  });
+}
+});
+
+document.addEventListener("submit", function (event) {
+    event.preventDefault;
+    setInitials(currentGame.score);
+    setState(3);
+});
 }
 
 init();
-
+  
