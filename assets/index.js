@@ -15,6 +15,7 @@ var finalEle = document.querySelector("#finalScore");
 var sendScoreEle = document.querySelector("#sendScore");
 var playerInfoEle = document.querySelector("#playerInfo");
 var highScoresEle = document.querySelector("highScoresEl");
+var messageEl = document.querySelector("#message");
 var timeLeft;
 var timeInterval;
 
@@ -32,12 +33,12 @@ var questions = [
     answer: 3
   },
   {
-    question: "What is the name of Jon Snow's direwolf?",
-    answers: ["GreyWolf", "Lady", "Nymeria", "Ghost"],
-    answer: 3
+    question: "Where can you find the Many-Faced God?",
+    answers: ["Braavos", "Essos", "Meereen", "China"],
+    answer: 0
   },
   {
-    question: "What is the symbol for House Grejoy?",
+    question: "What is the symbol for House Greyjoy?",
     answers: ["Direwolf", "Lion", "Kraken", "Rose"],
     answer: 2
   },
@@ -74,6 +75,7 @@ var questions = [
 
 ];
 var currentQuestion = 0;
+
 //how to alternate through question array with answer choices
 var dynamicElements = [
   screen0Ele,
@@ -82,24 +84,14 @@ var dynamicElements = [
   screen3Ele,
   topScoreEle,
 ];
-// Create var and functions to save scores to high score list
-var HighScoreList = [];
-
-function gamePurpose(name, score) {
-    this.name = name;
-    this.score = score;
-}
-//store results at end of game
-function storeGame() {
-    localStorage.setItem("highScoreList", JSON.stringify(HighScoreList));
-}
 
 //how to begin game function
 function init() {
   setEventListeners();
-  populateHighScores();
+  bringupHighScores
 }
 
+//determines what functions to complete going through each screen 
 function setState(state) {
   switch (state) {
     case 1:
@@ -109,7 +101,7 @@ function setState(state) {
         setFinalScore();
         break;
     case 3:
-        populateHighScores();
+        bringupHighScores();
         break;
     default:
       break;
@@ -117,7 +109,7 @@ function setState(state) {
 
 //allows us to switch through screen id and remove hide class
   dynamicElements.forEach(function (ele) {
-    var possibleStatesAttr = ele.getAttribute("data-states");
+    var possibleStatesAttr = ele.getAttribute("data-index");
     var possibleStates = JSON.parse(possibleStatesAttr);
     if (possibleStates.includes(state)) {
       ele.classList.remove(HIDE_CLASS);
@@ -132,59 +124,46 @@ function setState(state) {
 function newGame() {
     currentQuestion = 0;
     currentGame = new gamePurpose("", 0);
-    populateQuestion(currentQuestion);
+    provideQuestion(currentQuestion);
     countdown();
 }
 
 //provides the questions from array
-function populateQuestion() {
+function provideQuestion() {
   var questionObj = questions[currentQuestion];
   answersEl.innerHTML = "";
   questionEl.textContent = questionObj.question;
     for (i = 0; i < questionObj.answers.length; i++) {
         var answer = questionObj.answers[i];
-//   questionObj.answers.forEach(function (question) {
-    var li = document.createElement("li");
-    li.setAttribute("data-index", i);
-    li.textContent = answer;
-    answersEl.appendChild(li);
-    }
-  };
-
-
-function rightAnswer(currentQuestion, answerID) {
-    if (answerID === questions[currentQuestion]["answer"]) {
-        correct(true);
-    }
-    else {
-        correct(false);
+        var li = document.createElement("li");
+        li.setAttribute("data-index", i);
+        li.textContent = answer;
+        answersEl.appendChild(li);
+      }
+    };
+//fxn to go through answer and determine right or wrong
+   function checkAnswer(currentQuestion, answerID) {
+    if (answerID == questions[currentQuestion]["answer"]) {
+      correct(true);
+    } else {
+      correct(false);
     }
   }
-
-function correct(correct) {
+  
+//   shows when answer if chosen, will display right or wrong in alert
+  function correct(correct) {
     if (correct) {
-        displayMessage("Good");
-    }
-    else {
-        displayMessage("Wrong");
-        timeLeft = timeLeft - 5;
+      window.alert("Well done Westerosi!");
+    } else {
+      window.alert("Not even close!");
+      timeLeft = timeLeft - 5;
     }
   }
-
-    function displayMessage(message) {
-        switch (message) {
-            case "Good":
-                window.alert = "Well done Westerosi";
-            break;
-            case "Wrong":
-                window.alert = "Not even close"; 
-            break;
-        }
-    }
-
+  
+  
 //setup timer for quiz
 function countdown() {
-    timeLeft = 30;
+    timeLeft = 60;
     timerEle.textContent = timeLeft;
     timeInterval = setInterval(function () {
       
@@ -197,21 +176,51 @@ function countdown() {
       } else {
         timerEle.textContent = '';
         clearInterval(timeInterval);
-        // setState(2);
+        setState(2);
       }
-      console.log(timeLeft)
+    
     }, 1000);
   }
+
+  // Create var and functions to save scores to high score list
+var HighScoreList = [];
+
+function gamePurpose(name, score) {
+    this.name = name;
+    this.score = score;
+}
+//store results at end of game
+function storeGame() {
+    localStorage.setItem("highScoreList", JSON.stringify(HighScoreList));
+}
+
 
   function setFinalScore() {
       finalEle.textContent = currentGame.score;
   }
 
-  function populateHighScores() {
-      HighScoreList = JSON.parse(localStorage.getItem("HighScoreList"));
-      finalEle.innerHTML = "";
-
+  function getName(setFinalscore) {
+    currentGame["name"] = playerInfoEle.ariaValueMax;
+    HighScoreList.push(currentGame);
+    storeGame();
   }
+
+  function bringupHighScores() {
+      HighScoreList = JSON.parse(localStorage.getItem("HighScoreList"));
+      // highScoresEle.innerHTML = "";
+      if (HighScoreList !== null) {
+        HighScoreList = HighScoreList.sort((a,b) => b.score - a.score);
+        HighScoreList.forEach(function (gamePurpose, index) {
+          var a,b;
+          a.innerHTML = gamePurpose.name;
+          b.innerHTML = gamePurpose.score;
+        });
+    } else {
+      setFinalScore("Your score sucks!");
+      HighScoreList = [];
+    }
+  }
+  
 
 function setEventListeners() {
   screen0ButtonEle.addEventListener("click", function () {
@@ -223,21 +232,18 @@ function setEventListeners() {
   screen2ButtonEle.addEventListener("click", function () {
     setState(3);
   });
-  topScoreEle.addEventListener("click", function () {
-    setState(3);
-  });
   
   answersEl.addEventListener("click", function (evt) {
     var target = evt.target;
     if (target.matches("li")) {
-        rightAnswer(currentQuestion, target.getAttribute("data-index"));
+        checkAnswer(currentQuestion, target.getAttribute("data-index"));
         if (currentQuestion === questions.length - 1) {
           clearInterval(timeInterval);
           setState(2);
         } 
         else {
         currentQuestion++;
-        populateQuestion();
+        provideQuestion(currentQuestion);
     }
 }
 });
