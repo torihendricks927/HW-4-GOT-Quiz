@@ -7,7 +7,7 @@ https://torihendricks927.github.io/HW-4-GOT-Quiz/
 
 
 
-![Alt Text](./assets/Screen%20Shot%202022-03-30%20at%208.17.39%20PM.jpg)
+![ScreenShot](/assets/Screen%20Shot%202022-03-30%20at%208.17.39%20PM.png)
 
 ## Credits
 
