@@ -43,7 +43,7 @@ section {
     margin: 0 auto;
 }
 
-section ul li {
+section div {
     border: 5px solid black;
     list-style-type: none;
     padding: 10px;
@@ -51,6 +51,7 @@ section ul li {
     text-align: center;
     background-color: white;
 }
+
 
 .hide {
     display: none;
