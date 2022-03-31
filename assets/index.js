@@ -88,7 +88,7 @@ var dynamicElements = [
 //how to begin game function
 function init() {
   setEventListeners();
-  bringupHighScores
+  bringupHighScores();
 }
 
 //determines what functions to complete going through each screen 
