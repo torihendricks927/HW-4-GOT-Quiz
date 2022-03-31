@@ -1,11 +1,12 @@
 # HW-4-GOT-Quiz
 
 ## How well do you know your GOT?
-This quiz was created to test the skills of Game of Thrones Fans. The website provides an entry page and a start button. It will then provide a set of 10 questions to answer correctly. When the player clicks an answer, an alert will come up making the player aware if they got the answer right or not. At the end of the quiz, it will provide a score page and the ability to add their Name and favorite House to place on the top score list. 
 
 https://torihendricks927.github.io/HW-4-GOT-Quiz/
 
-##ScreenShot
+
+This quiz was created to test the skills of Game of Thrones Fans. The website provides an entry page and a start button. It will then provide a set of 10 questions to answer correctly. When the player clicks an answer, an alert will come up making the player aware if they got the answer right or not. At the end of the quiz, it will provide a score page and the ability to add their Name and favorite House to place on the top score list. 
+
 
 ![Alt text](/assets/images/Screen%20Shot%202022-03-30%20at%208.43.24%20PM.png)
 
