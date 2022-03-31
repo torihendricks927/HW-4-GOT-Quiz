@@ -5,7 +5,9 @@ This quiz was created to test the skills of Game of Thrones Fans. The website pr
 
 https://torihendricks927.github.io/HW-4-GOT-Quiz/
 
-![Alt text](./assets/Screen%20Shot%202022-03-30%20at%208.17.39%20PM.png)
+
+
+![My Image](./assets/Screen%20Shot%202022-03-30%20at%208.17.39%20PM.png)
 
 ## Credits
 
